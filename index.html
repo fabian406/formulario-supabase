@@ -1,12 +1,20 @@
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formulario con Supabase</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+@import "tailwindcss";
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 50%, #f0f9ff 100%);
+  background-attachment: fixed;
+}
+
+@keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes cuenta { from { width: 100%; } to { width: 0%; } }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+.aparecer { animation: aparecer .3s ease-out; }
+.barra { height: 3px; border-radius: 9999px; background: #6366f1; animation: cuenta 5s linear forwards; }
+.spinner {
+  width: 1rem; height: 1rem; border-radius: 9999px;
+  border: 2px solid rgb(255 255 255 / .4); border-top-color: #fff;
+  animation: girar .7s linear infinite;
+}
