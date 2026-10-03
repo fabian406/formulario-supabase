@@ -1,6 +1,6 @@
 # Formulario con Supabase
 
-Sistema de información básico: un formulario web (React + Vite + Tailwind) que guarda y lista datos reales en una base de datos PostgreSQL de Supabase.
+Sistema de información básico: un formulario web (React + Vite + Tailwind) que guarda datos reales en una base de datos PostgreSQL de Supabase.
 
 ## 1. Cómo se conecta el sistema con la base de datos
 
@@ -12,8 +12,12 @@ Navegador (React)  ──HTTPS──▶  API REST de Supabase (PostgREST)  ─�
 1. **Credenciales.** En Supabase, *Project Settings → API* hay dos datos: la **URL del proyecto** y la **anon key** (clave pública). Se guardan en `.env` como `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
 2. **Cliente.** `src/supabaseClient.js` usa `createClient(url, anonKey)` de la librería `@supabase/supabase-js`. Ese objeto `supabase` es el único punto de conexión del sistema.
 3. **Guardar (INSERT).** Al enviar el formulario, `App.jsx` ejecuta `supabase.from('contactos').insert([form])`. La librería convierte esa llamada en una petición HTTPS a la API de Supabase, que la traduce a un `INSERT` en PostgreSQL.
-4. **Leer (SELECT).** `supabase.from('contactos').select('*')` trae los registros y React los muestra en pantalla.
-5. **Seguridad (RLS).** La anon key es pública, por eso la tabla tiene *Row Level Security* activado. Las políticas de `supabase.sql` solo permiten al rol `anon` insertar y leer. Sin políticas, la base rechaza todo.
+4. **Confirmación.** Tras guardar, la pantalla muestra durante 5 segundos solo el registro recién enviado. El navegador no lee la tabla; los registros se consultan en Supabase → *Table Editor → contactos*.
+5. **Seguridad (RLS).** La anon key es pública, por eso la tabla tiene *Row Level Security* activado. Las políticas de `supabase.sql` solo permiten al rol `anon` insertar. No existe política de lectura, así que nadie puede leer los datos desde el navegador. La base valida además el formato (identificación y celular solo números).
+
+## Campos del formulario
+
+Nombres, apellidos, tipo de identificación (CC, TI, CE, RC), número de identificación (solo números), correo electrónico, celular (10 dígitos) y mensaje.
 
 ## 2. Estructura del proyecto
 
@@ -21,7 +25,7 @@ Navegador (React)  ──HTTPS──▶  API REST de Supabase (PostgREST)  ─�
 |---|---|
 | `supabase.sql` | Crea la tabla `contactos` y las políticas de seguridad |
 | `src/supabaseClient.js` | Conexión con Supabase |
-| `src/App.jsx` | Formulario + lista de registros |
+| `src/App.jsx` | Formulario con validaciones y confirmación del registro guardado |
 | `.env.example` | Plantilla de credenciales |
 
 ## 3. Puesta en marcha
